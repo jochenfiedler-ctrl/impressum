@@ -68,6 +68,7 @@
 
   <nav>
     <a href="#impressum">Impressum</a>
+    <a href="#kontakt">Kontakt</a>
     <a href="#datenschutz">Datenschutz</a>
   </nav>
 
@@ -81,7 +82,8 @@
   </address>
 
   <p><strong>Kontakt</strong><br>
-  E-Mail: <a href="mailto:doku_jojo@gmx-topmail.de">doku_jojo@gmx-topmail.de</a></p>
+  E-Mail: <a href="mailto:doku_jojo@gmx-topmail.de">doku_jojo@gmx-topmail.de</a><br>
+  Kontaktformular: <a href="#kontakt">siehe unten</a></p>
 
   <p><strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</strong><br>
   Jochen Fiedler, Schulstr. 4b, 96317 Kronach</p>
@@ -95,6 +97,40 @@
   Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: DE123456789</p>
   -->
 
+  <h2 id="kontakt">Kontaktformular</h2>
+  <p class="muted">Du erreichst mich auch direkt per E-Mail. Ich antworte in der Regel innerhalb weniger Tage.</p>
+
+  <form id="contact-form" action="https://formspree.io/f/xljgrzqz" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required maxlength="100" autocomplete="name">
+
+    <label for="email">E-Mail-Adresse</label>
+    <input type="email" id="email" name="email" required maxlength="150" autocomplete="email">
+
+    <label for="subject">Betreff</label>
+    <input type="text" id="subject" name="subject" required maxlength="150">
+
+    <label for="message">Nachricht</label>
+    <textarea id="message" name="message" required maxlength="5000"></textarea>
+
+    <!-- Spam-Schutz (Honeypot): für Menschen unsichtbar -->
+    <div class="hp" aria-hidden="true">
+      <label for="website">Bitte leer lassen</label>
+      <input type="text" id="website" name="_gotcha" tabindex="-1" autocomplete="off">
+    </div>
+
+    <div class="check">
+      <input type="checkbox" id="privacy" name="datenschutz" required>
+      <label for="privacy" style="font-weight:400;margin:0">
+        Ich habe die <a href="#datenschutz">Datenschutzhinweise</a> gelesen und bin damit einverstanden,
+        dass meine Angaben zur Bearbeitung meiner Anfrage verwendet werden.
+      </label>
+    </div>
+
+    <button type="submit" id="send">Nachricht senden</button>
+    <div id="status" role="status" aria-live="polite"></div>
+    <noscript><p class="muted">Ohne JavaScript wirst du nach dem Absenden auf die Bestätigungsseite des Formulardienstes weitergeleitet.</p></noscript>
+  </form>
 
   <h2 id="datenschutz">Datenschutzhinweise</h2>
 
@@ -104,8 +140,14 @@
   <p><strong>Aufruf dieser Seite (Hosting)</strong><br>
   Diese Seite liegt bei GitHub Pages, einem Dienst der GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA. Beim Aufruf verarbeitet GitHub technisch notwendige Verbindungsdaten in Server-Protokollen, insbesondere IP-Adresse, Zeitpunkt, abgerufene Seite und Angaben zum Browser. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer sicheren und zuverlässigen Bereitstellung der Seite). Eine Datenübermittlung in die USA stützt sich auf die jeweils gültigen Garantien (z. B. EU-US Data Privacy Framework bzw. Standardvertragsklauseln). Diese Seite setzt keine Cookies und bindet keine Inhalte anderer Anbieter ein.</p>
 
-  <p><strong>Kontakt per E-Mail</strong><br>
-  Wenn du mir eine E-Mail schreibst, verarbeite ich deine Angaben (E-Mail-Adresse, Inhalt der Nachricht), um deine Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen bzw. Vertragsdurchführung), im Übrigen Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen).</p>
+  <p><strong>Kontaktformular und E-Mail: Welche Daten werden verarbeitet?</strong><br>
+  Wenn du das Kontaktformular nutzt, verarbeite ich die Angaben, die du eingibst: Name, E-Mail-Adresse, Betreff und Nachricht. Zusätzlich fallen technisch bedingt beim Absenden Verbindungsdaten (z. B. IP-Adresse, Zeitpunkt) beim Formulardienst an. Schreibst du mir direkt eine E-Mail, verarbeite ich deine E-Mail-Adresse und den Inhalt der Nachricht.</p>
+
+  <p><strong>Zweck und Rechtsgrundlage</strong><br>
+  Die Daten werden ausschließlich verwendet, um deine Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen bzw. Vertragsdurchführung), im Übrigen Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen).</p>
+
+  <p><strong>Empfänger / Formulardienst</strong><br>
+  Zur Übermittlung der Formularnachrichten nutze ich den Dienst Formspree (Formspree, Inc., USA). Die Nachricht wird über diesen Dienst per E-Mail an mich weitergeleitet. Mit dem Anbieter besteht eine Auftragsverarbeitung; eine Datenübermittlung in die USA stützt sich auf die jeweils gültigen Garantien (z. B. EU-US Data Privacy Framework bzw. Standardvertragsklauseln).</p>
 
   <p><strong>Speicherdauer</strong><br>
   Ich lösche deine Anfrage, sobald sie abschließend bearbeitet ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
@@ -120,5 +162,38 @@
 
 </main>
 
+<script>
+(function () {
+  var form = document.getElementById('contact-form');
+  var status = document.getElementById('status');
+  var btn = document.getElementById('send');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    btn.disabled = true;
+    status.className = '';
+    status.textContent = 'Wird gesendet …';
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (r) {
+      if (r.ok) {
+        form.reset();
+        status.className = 'ok';
+        status.textContent = 'Danke, deine Nachricht wurde gesendet.';
+      } else {
+        throw new Error('fehler');
+      }
+    }).catch(function () {
+      status.className = 'err';
+      status.textContent = 'Das Senden hat nicht geklappt. Bitte schreib mir direkt per E-Mail an doku_jojo@gmx-topmail.de.';
+    }).then(function () {
+      btn.disabled = false;
+    });
+  });
+})();
+</script>
 </body>
 </html>
